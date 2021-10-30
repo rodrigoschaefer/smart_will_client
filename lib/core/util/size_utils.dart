@@ -3,13 +3,18 @@ import 'dart:io';
 import 'dart:ui' as ui;
 import 'dart:math' as math;
 
+/**
+ * Calculates a relative size for consistence over diferent screen sizes
+ */
 class SizeUtils {
 
   static late MediaQueryData _mediaQueryData;
   static double? screenWidth;
   static double? screenHeight;
+  // Horizontal and vertical sizes adjusted to screen size
   static late double horizontalBlockSize;
   static late double verticalBlockSize;
+  // Provides app bar height
   static late double appBarHeight;
   
   static void init(BuildContext context) {

@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_will_client/core/util/size_utils.dart';
 
@@ -17,8 +16,8 @@ class RoundedButton extends StatelessWidget {
       this.textColor,
       this.borderRadius = 40,
       this.onTap,
-      this.padding = const EdgeInsets.all(10),
-      this.fontSize = 14.0});
+      this.padding = const EdgeInsets.all(12),
+      this.fontSize = 18.0});
 
   @override
   Widget build(BuildContext context) {

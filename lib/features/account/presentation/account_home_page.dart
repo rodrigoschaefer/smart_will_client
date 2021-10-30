@@ -1,12 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:smart_will_client/core/util/size_utils.dart';
 import 'package:smart_will_client/core/widgets/rounded_button.dart';
-import 'package:web3dart/web3dart.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key, required this.title}) : super(key: key);
+class AccountHomePage extends StatelessWidget {
+  const AccountHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -24,39 +21,22 @@ class HomePage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 RoundedButton(
-                  text: 'acc1',
+                  text: 'Owned Wills',
                   backgroundColor: Colors.amber,
-                  borderRadius: 10,
                 ),
                 const SizedBox(
                   height: 10,
                 ),
                 RoundedButton(
-                  text: 'acc2',
+                  text: 'Recipient Wills',
                   backgroundColor: Colors.amber,
-                  borderRadius: 10,
                 ),
                 const SizedBox(
                   height: 10,
                 ),
-                RoundedButton(
-                  text: 'acc3',
-                  backgroundColor: Colors.amber,
-                  borderRadius: 10,
-                )
               ],
             ),
           )),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          var rng = Random.secure();
-          Credentials random = EthPrivateKey.createRandom(rng);
-          var address = await random.extractAddress();
-          // ignore: avoid_print
-          print(address.hex);
-        },
-        child: const Icon(Icons.add),
-      ),
     );
   }
 }

@@ -9,7 +9,6 @@ class AccountHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SizeUtils.init(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(title),

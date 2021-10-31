@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:smart_will_client/features/account/data/models/account.dart';
+import 'package:smart_will_client/core/widgets/rounded_button.dart';
 
 class AccountItem extends StatelessWidget {
-  final Account account;
+  final String address;
 
-  AccountItem(this.account);
+  AccountItem({required this.address});
 
   @override
   Widget build(BuildContext context) {
-    return Text('Acc 1');
+    return RoundedButton(
+      text: address,
+    );
   }
 }

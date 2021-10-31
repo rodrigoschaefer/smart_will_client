@@ -1,13 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:smart_will_client/core/util/Constants.dart';
 
 import 'core/presentation/home_page.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'core/util/size_utils.dart';
+import 'features/account/data/models/account.dart';
+
+void main() async {
+  await initApp();
+  runApp(const SWApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+initApp() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(AccountAdapter());
+  await Hive.openBox<Account>(Constants.accountBox);
+}
+
+class SWApp extends StatelessWidget {
+  const SWApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +37,7 @@ class MyApp extends StatelessWidget {
             primary: Colors.amber,
             background: Colors.green),
       ),
-      home: const HomePage(title: 'Smart Will'),
+      home: HomePage(title: 'Smart Will'),
     );
   }
 }

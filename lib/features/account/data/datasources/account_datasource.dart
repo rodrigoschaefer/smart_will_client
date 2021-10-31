@@ -1,17 +1,12 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:smart_will_client/core/util/Constants.dart';
 import 'package:smart_will_client/features/account/data/models/account.dart';
 
 class AccountDatasource {
-  late Box accountBox;
+  late Box<Account> accountBox;
 
   AccountDatasource() {
-    init();
-  }
-
-  init() async {
-    await Hive.initFlutter();
-    accountBox = await Hive.openBox('accountBox');
-    Hive.registerAdapter(AccountAdapter());
+    accountBox = Hive.box<Account>(Constants.accountBox);
   }
 
   List<Account> getAll() {
@@ -26,7 +21,7 @@ class AccountDatasource {
     accountBox.put(acc.address, acc);
   }
 
-  Account get(String address) {
+  Account? get(String address) {
     return accountBox.get(address);
   }
 }

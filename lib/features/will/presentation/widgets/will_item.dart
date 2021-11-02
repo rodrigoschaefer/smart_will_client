@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:smart_will_client/core/presentation/widgets/rounded_button.dart';
 import 'package:smart_will_client/core/util/size_utils.dart';
-import 'package:smart_will_client/core/widgets/rounded_button.dart';
 
-class AccountItem extends StatelessWidget {
-  final String address;
-  final onTapDelete;
-  final onTapAddress;
+class WillItem extends StatelessWidget {
+  String ownerAddress;
+  String recipientAddress;
+  int gweiAmmount;
+  DateTime lastActivity;
+  DateTime redemptionDate;
+  final onTapWillDelete;
+  final onTapWill;
 
-  AccountItem(
-      {required this.address,
-      required this.onTapAddress,
-      required this.onTapDelete});
+  WillItem(
+      {required this.gweiAmmount,
+      required this.lastActivity,
+      required this.ownerAddress,
+      required this.recipientAddress,
+      required this.redemptionDate,
+      required this.onTapWill,
+      required this.onTapWillDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +29,8 @@ class AccountItem extends StatelessWidget {
             children: [
               Flexible(
                   child: InkWell(
-                child: Text(address),
-                onTap: onTapAddress,
+                child: Text(ownerAddress),
+                onTap: onTapWill,
               )),
               IconButton(
                 icon: Icon(
@@ -51,7 +59,7 @@ class AccountItem extends StatelessWidget {
                             RoundedButton(
                               text: 'Yes',
                               backgroundColor: Colors.lightBlueAccent,
-                              onTap: onTapDelete,
+                              onTap: onTapWillDelete,
                             ),
                             const SizedBox(
                               height: 10,

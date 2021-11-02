@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:smart_will_client/core/presentation/widgets/account_item.dart';
 import 'package:smart_will_client/core/util/size_utils.dart';
-import 'package:smart_will_client/core/widgets/account_item.dart';
+import 'package:smart_will_client/core/util/utils.dart';
+
 import 'package:smart_will_client/features/account/data/models/account.dart';
 import 'package:smart_will_client/features/account/data/repositories/account_repository.dart';
+import 'package:smart_will_client/features/account/presentation/account_home_page.dart';
 import 'package:web3dart/web3dart.dart';
 
 class HomePage extends StatefulWidget {
@@ -50,7 +53,11 @@ class _HomePageState extends State<HomePage> {
                 return AccountItem(
                   address: accounts[index].address,
                   onTapAddress: () {
-                    // Go to acc page;
+                    Utils.navigateToPage(
+                        context,
+                        AccountHomePage(
+                          title: accounts[index].address,
+                        ));
                   },
                   onTapDelete: () {
                     Navigator.pop(context);

@@ -1,9 +1,6 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:smart_will_client/core/util/size_utils.dart';
 import 'package:smart_will_client/core/widgets/account_item.dart';
-import 'package:smart_will_client/core/widgets/rounded_button.dart';
 import 'package:smart_will_client/features/account/data/models/account.dart';
 import 'package:smart_will_client/features/account/data/repositories/account_repository.dart';
 import 'package:web3dart/web3dart.dart';
@@ -44,7 +41,7 @@ class _HomePageState extends State<HomePage> {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Center(
             child: ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               padding: EdgeInsets.symmetric(
                   vertical: SizeUtils.verticalBlockSize * 1),
@@ -52,6 +49,16 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (BuildContext context, int index) {
                 return AccountItem(
                   address: accounts[index].address,
+                  onTapAddress: () {
+                    // Go to acc page;
+                  },
+                  onTapDelete: () {
+                    Navigator.pop(context);
+                    setState(() {
+                      _accountRepository.deleteAccount(accounts[index].address);
+                      accounts = _accountRepository.getAllAccounts();
+                    });
+                  },
                 );
               },
             ),

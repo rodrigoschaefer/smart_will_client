@@ -14,4 +14,8 @@ class PrivateKeyDatasource {
   static Future<String?> read(key) async {
     return await storage.read(key: key);
   }
+
+  static Future<void> delete(key) async {
+    return await storage.delete(key: key);
+  }
 }

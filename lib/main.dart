@@ -32,11 +32,11 @@ class SWApp extends StatelessWidget {
     return MaterialApp(
       title: 'Smart Will',
       theme: theme.copyWith(
-        colorScheme: theme.colorScheme.copyWith(
-            secondary: Colors.blue,
-            primary: Colors.amber,
-            background: Colors.green),
-      ),
+          colorScheme: theme.colorScheme.copyWith(
+              secondary: Colors.blue,
+              primary: Colors.amber,
+              background: Colors.green),
+          cardTheme: const CardTheme(color: Colors.amber, elevation: 5)),
       home: HomePage(title: 'Smart Will'),
     );
   }

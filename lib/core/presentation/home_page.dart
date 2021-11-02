@@ -6,10 +6,12 @@ import 'package:smart_will_client/core/util/utils.dart';
 import 'package:smart_will_client/features/account/data/models/account.dart';
 import 'package:smart_will_client/features/account/data/repositories/account_repository.dart';
 import 'package:smart_will_client/features/account/presentation/account_home_page.dart';
-import 'package:web3dart/web3dart.dart';
+import 'package:smart_will_client/features/will/domain/repositories/will_repository.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key, required this.title}) : super(key: key);
+  final WillRepository willRepository;
+  HomePage({Key? key, required this.title, required this.willRepository})
+      : super(key: key);
 
   final String title;
 
@@ -57,6 +59,7 @@ class _HomePageState extends State<HomePage> {
                         context,
                         AccountHomePage(
                           title: accounts[index].address,
+                          willRepository: widget.willRepository,
                         ));
                   },
                   onTapDelete: () {

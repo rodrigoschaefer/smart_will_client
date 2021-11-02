@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:smart_will_client/features/will/domain/repositories/will_repository.dart';
 
 class AccountRecipientWillsPage extends StatefulWidget {
   final address;
+  WillRepository _willRepository;
 
-  AccountRecipientWillsPage(this.address);
+  AccountRecipientWillsPage(this.address,this._willRepository);
 
   @override
   State<AccountRecipientWillsPage> createState() =>

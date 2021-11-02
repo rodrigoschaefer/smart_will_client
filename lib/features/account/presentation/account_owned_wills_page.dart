@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:smart_will_client/features/will/domain/repositories/will_repository.dart';
 
-class AccountOwnedWillsPage extends StatefulWidget{
-
+class AccountOwnedWillsPage extends StatefulWidget {
   final address;
+  WillRepository _willRepository;
 
-  AccountOwnedWillsPage(this.address);
+  AccountOwnedWillsPage(this.address,this._willRepository);
 
   @override
   State<AccountOwnedWillsPage> createState() => _AccountOwnedWillsPageState();
@@ -13,7 +14,7 @@ class AccountOwnedWillsPage extends StatefulWidget{
 class _AccountOwnedWillsPageState extends State<AccountOwnedWillsPage> {
   @override
   Widget build(BuildContext context) {
-      return Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text(
           widget.address,
@@ -26,9 +27,7 @@ class _AccountOwnedWillsPageState extends State<AccountOwnedWillsPage> {
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                
-              ],
+              children: <Widget>[],
             ),
           )),
     );

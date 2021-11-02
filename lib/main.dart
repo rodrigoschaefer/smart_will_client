@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:smart_will_client/core/util/Constants.dart';
+import 'package:smart_will_client/features/will/data/repositories/will_repository_local_impl.dart';
 
 import 'core/presentation/home_page.dart';
 
-import 'core/util/size_utils.dart';
 import 'features/account/data/models/account.dart';
+import 'features/will/data/datasources/will_local_rpc_datasource.dart';
 
 void main() async {
   await initApp();
@@ -37,7 +38,10 @@ class SWApp extends StatelessWidget {
               primary: Colors.amber,
               background: Colors.green),
           cardTheme: const CardTheme(color: Colors.amber, elevation: 5)),
-      home: HomePage(title: 'Smart Will'),
+      home: HomePage(
+        title: 'Smart Will',
+        willRepository: WillRepositoryLocalImpl(WillLocalRpcDatasource()),
+      ),
     );
   }
 }

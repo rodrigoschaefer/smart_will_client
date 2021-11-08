@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class Utils {
-  static void navigateToPage(context, Widget page,
+  static dynamic navigateToPage(context, Widget page,
       {bool fullscreen = false, String? routeName}) async {
-    await Navigator.push(
+    return await Navigator.push(
       context,
       routeName == null
           ? MaterialPageRoute(

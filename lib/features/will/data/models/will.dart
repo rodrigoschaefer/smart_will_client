@@ -1,11 +1,13 @@
 class Will {
+  int? id;
   String ownerAddress;
   String recipientAddress;
-  int gweiAmmount;
-  DateTime lastActivity;
+  BigInt gweiAmmount;
+  DateTime? lastActivity;
   DateTime redemptionDate;
   Will(
-      {required this.gweiAmmount,
+      {this.id,
+      required this.gweiAmmount,
       required this.lastActivity,
       required this.ownerAddress,
       required this.recipientAddress,

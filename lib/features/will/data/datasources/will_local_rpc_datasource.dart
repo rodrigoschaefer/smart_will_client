@@ -1,14 +1,15 @@
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:smart_will_client/core/util/constants.dart';
+import 'package:smart_will_client/features/account/data/datasources/private_key_datasource.dart';
 import 'package:smart_will_client/features/will/data/models/will.dart';
 import 'package:web3dart/web3dart.dart';
 
 abstract class WillDatasource {
-  Future<List<Will>> getOwnedWills(ownerAddress);
-  Future<List<Will>> getRecipientWills(recipientAddress);
-  Future<Will> createWill(String ownerAddress, String recipientAddress,
-      int gweiAmmount, DateTime lastActivity, DateTime redemptionDate);
+  Future<List<Will>> getWillsByOwner(ownerAddress);
+  Future<List<Will>> getWillsByRecipient(recipientAddress);
+  Future<bool> createWill(String ownerAddress, String recipientAddress,
+      BigInt weiAmmount, DateTime redemptionDate);
   Future<bool> redeemWill(recipientAddress, id);
 }
 
@@ -43,28 +44,51 @@ class WillLocalRpcDatasource implements WillDatasource {
   }
 
   @override
-  Future<Will> createWill(String ownerAddress, String recipientAddress,
-      int gweiAmmount, DateTime lastActivity, DateTime redemptionDate) {
-    throw UnimplementedError();
+  Future<bool> createWill(String ownerAddress, String recipientAddress,
+      BigInt weiAmmount, DateTime redemptionDate) async {
+    try {
+      var pkey = await PrivateKeyDatasource.read(ownerAddress);
+      final credentials = EthPrivateKey.fromHex(pkey!);
+      var result = await ethClient.sendTransaction(
+        credentials,
+        Transaction.callContract(
+            from: EthereumAddress.fromHex(ownerAddress),
+            contract: contract,
+            function: createWillContractFunction,
+            parameters: [
+              BigInt.from(redemptionDate.millisecondsSinceEpoch *
+                  1000), // Ethereum treats dates as seconds since linux epoch
+              EthereumAddress.fromHex(recipientAddress)
+            ],
+            value: EtherAmount.fromUnitAndValue(EtherUnit.wei, weiAmmount)),
+      );
+      return true;
+    } catch (e) {
+      print('error! $e');
+      return false;
+    }
   }
 
   @override
-  Future<List<Will>> getOwnedWills(ownerAddress) async {
+  Future<List<Will>> getWillsByOwner(ownerAddress) async {
     final data = await ethClient.call(
         contract: contract,
         function: getOwnedWillsContractFunction,
-        params: [ownerAddress]);
-
-    throw UnimplementedError();
+        params: [EthereumAddress.fromHex(ownerAddress)]);
+    return data as List<Will>;
   }
 
   @override
-  Future<List<Will>> getRecipientWills(recipientAddress) {
-    throw UnimplementedError();
+  Future<List<Will>> getWillsByRecipient(recipientAddress) async {
+    final data = await ethClient.call(
+        contract: contract,
+        function: getRecipientWillsContractFunction,
+        params: [EthereumAddress.fromHex(recipientAddress)]);
+    return data as List<Will>;
   }
 
   @override
-  Future<bool> redeemWill(recipientAddress, id) {
+  Future<bool> redeemWill(recipientAddress, id) async {
     throw UnimplementedError();
   }
 }

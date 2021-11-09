@@ -71,11 +71,15 @@ class WillLocalRpcDatasource implements WillDatasource {
 
   @override
   Future<List<Will>> getWillsByOwner(ownerAddress) async {
-    final data = await ethClient.call(
+    var data = await ethClient.call(
         contract: contract,
         function: getOwnedWillsContractFunction,
         params: [EthereumAddress.fromHex(ownerAddress)]);
-    return data as List<Will>;
+    List<Will> wills = [];
+    for (List<dynamic> fields in data[0]) {
+      wills.add(Will.fromBlockchain(fields));
+    }
+    return wills;
   }
 
   @override

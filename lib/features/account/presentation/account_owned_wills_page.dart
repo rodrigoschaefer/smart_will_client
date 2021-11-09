@@ -61,7 +61,7 @@ class _AccountOwnedWillsPageState extends State<AccountOwnedWillsPage> {
                   itemCount: willsList.length,
                   itemBuilder: (BuildContext context, int index) {
                     return WillItem(
-                      weiAmmount: willsList[index].gweiAmmount,
+                      weiAmmount: willsList[index].weiAmmount,
                       lastActivity: willsList[index].lastActivity,
                       ownerAddress: willsList[index].ownerAddress,
                       recipientAddress: willsList[index].recipientAddress,
@@ -70,9 +70,9 @@ class _AccountOwnedWillsPageState extends State<AccountOwnedWillsPage> {
                   }))),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          bool result = await Utils.navigateToPage(
+          bool? result = await Utils.navigateToPage(
               context, CreateWillPage(widget.address, widget._willRepository));
-          if (result) {
+          if (result != null && result == true) {
             setState(() {
               isFetchingWills = true;
             });

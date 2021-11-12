@@ -7,6 +7,7 @@ import 'core/presentation/home_page.dart';
 
 import 'features/account/data/models/account.dart';
 import 'features/will/data/datasources/will_local_rpc_datasource.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
   await initApp();
@@ -17,6 +18,7 @@ initApp() async {
   await Hive.initFlutter();
   Hive.registerAdapter(AccountAdapter());
   await Hive.openBox<Account>(Constants.accountBox);
+  initializeDateFormatting();
 }
 
 class SWApp extends StatelessWidget {

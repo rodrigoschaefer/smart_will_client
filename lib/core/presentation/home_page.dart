@@ -10,10 +10,7 @@ import 'package:smart_will_client/features/will/domain/repositories/will_reposit
 
 class HomePage extends StatefulWidget {
   final WillRepository willRepository;
-  HomePage({Key? key, required this.title, required this.willRepository})
-      : super(key: key);
-
-  final String title;
+  HomePage({Key? key, required this.willRepository}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -40,7 +37,9 @@ class _HomePageState extends State<HomePage> {
     SizeUtils.init(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: const Text(
+          'Accounts',
+        ),
       ),
       body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -58,7 +57,7 @@ class _HomePageState extends State<HomePage> {
                     Utils.navigateToPage(
                         context,
                         AccountHomePage(
-                          title: accounts[index].address,
+                          accountAddress: accounts[index].address,
                           willRepository: widget.willRepository,
                         ));
                   },

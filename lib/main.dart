@@ -34,12 +34,17 @@ class SWApp extends StatelessWidget {
       title: 'Smart Will',
       theme: theme.copyWith(
           colorScheme: theme.colorScheme.copyWith(
-              secondary: Colors.blue,
+              secondary: Colors.brown,
               primary: Colors.amber,
               background: Colors.green),
-          cardTheme: const CardTheme(color: Colors.amber, elevation: 5)),
+          cardTheme: const CardTheme(color: Colors.amber, elevation: 5),
+          floatingActionButtonTheme:
+              const FloatingActionButtonThemeData(backgroundColor: Colors.blue),
+          appBarTheme: const AppBarTheme(
+              backgroundColor: Colors.amber,
+              titleTextStyle: TextStyle(color: Colors.black, fontSize: 20),
+              iconTheme: IconThemeData(color: Colors.black))),
       home: HomePage(
-        title: 'Smart Will',
         willRepository: WillRepositoryLocalImpl(WillLocalRpcDatasource()),
       ),
     );

@@ -3,9 +3,9 @@ import 'package:smart_will_client/features/will/domain/repositories/will_reposit
 
 class AccountRecipientWillsPage extends StatefulWidget {
   final address;
-  WillRepository _willRepository;
+  WillRepository willRepository;
 
-  AccountRecipientWillsPage(this.address,this._willRepository);
+  AccountRecipientWillsPage({ required this.address,required this.willRepository});
 
   @override
   State<AccountRecipientWillsPage> createState() =>
@@ -17,10 +17,8 @@ class _AccountRecipientWillsPageState extends State<AccountRecipientWillsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          widget.address,
-          maxLines: 2,
-          style: TextStyle(fontSize: 14),
+        title: const Text(
+          'Recipient wills',
         ),
       ),
       body: Padding(
@@ -28,9 +26,7 @@ class _AccountRecipientWillsPageState extends State<AccountRecipientWillsPage> {
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-               
-              ],
+              children: <Widget>[],
             ),
           )),
     );

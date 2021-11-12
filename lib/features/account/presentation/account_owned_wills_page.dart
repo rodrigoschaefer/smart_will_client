@@ -13,9 +13,9 @@ import 'package:web3dart/web3dart.dart';
 
 class AccountOwnedWillsPage extends StatefulWidget {
   final address;
-  WillRepository _willRepository;
+  final WillRepository willRepository;
 
-  AccountOwnedWillsPage(this.address, this._willRepository);
+  const AccountOwnedWillsPage({this.address, required this.willRepository});
 
   @override
   State<AccountOwnedWillsPage> createState() => _AccountOwnedWillsPageState();
@@ -33,7 +33,7 @@ class _AccountOwnedWillsPageState extends State<AccountOwnedWillsPage> {
   }
 
   init() async {
-    willsList = await widget._willRepository.getOwnedWills(widget.address);
+    willsList = await widget.willRepository.getOwnedWills(widget.address);
     print('FOUND ${willsList.length} WILLS!');
     setState(() {
       isFetchingWills = false;
@@ -44,10 +44,8 @@ class _AccountOwnedWillsPageState extends State<AccountOwnedWillsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          widget.address,
-          maxLines: 2,
-          style: const TextStyle(fontSize: 14),
+        title: const Text(
+          'Owned wills',
         ),
       ),
       body: Padding(
@@ -71,14 +69,13 @@ class _AccountOwnedWillsPageState extends State<AccountOwnedWillsPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           bool? result = await Utils.navigateToPage(
-              context, CreateWillPage(widget.address, widget._willRepository));
+              context, CreateWillPage(widget.address, widget.willRepository));
           if (result != null && result == true) {
             setState(() {
               isFetchingWills = true;
             });
           }
-          willsList =
-              await widget._willRepository.getOwnedWills(widget.address);
+          willsList = await widget.willRepository.getOwnedWills(widget.address);
           setState(() {
             isFetchingWills = false;
           });

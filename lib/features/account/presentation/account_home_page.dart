@@ -30,12 +30,16 @@ class AccountHomePage extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.folder_open),
+              const Icon(
+                Icons.folder_open,
+                color: Colors.blue,
+              ),
               const SizedBox(
                 width: 10,
               ),
               Text(
                 accountAddress,
+                style: const TextStyle(color: Colors.blue),
               )
             ],
           ),

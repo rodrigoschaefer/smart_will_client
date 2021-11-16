@@ -22,7 +22,7 @@ class AccountOwnedWillsPage extends StatefulWidget {
 }
 
 class _AccountOwnedWillsPageState extends State<AccountOwnedWillsPage> {
-  List<Will> willsList = [];
+  List<Will>? willsList = [];
   late bool isFetchingWills;
 
   @override
@@ -33,8 +33,12 @@ class _AccountOwnedWillsPageState extends State<AccountOwnedWillsPage> {
   }
 
   init() async {
-    willsList = await widget.willRepository.getOwnedWills(widget.address);
-    print('FOUND ${willsList.length} WILLS!');
+    try {
+      willsList = await widget.willRepository.getOwnedWills(widget.address);
+    } catch (e) {
+      willsList = null;
+    }
+    print('FOUND ${willsList?.length} WILLS!');
     setState(() {
       isFetchingWills = false;
     });
@@ -51,21 +55,34 @@ class _AccountOwnedWillsPageState extends State<AccountOwnedWillsPage> {
       body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Center(
-              child: ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  padding: EdgeInsets.symmetric(
-                      vertical: SizeUtils.verticalBlockSize * 1),
-                  itemCount: willsList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return WillItem(
-                      weiAmmount: willsList[index].weiAmmount,
-                      lastActivity: willsList[index].lastActivity,
-                      ownerAddress: willsList[index].ownerAddress,
-                      recipientAddress: willsList[index].recipientAddress,
-                      redemptionDate: willsList[index].redemptionDate,
-                    );
-                  }))),
+              child: isFetchingWills
+                  ? const CircularProgressIndicator(
+                      color: Colors.blue,
+                    )
+                  : willsList != null
+                      ? willsList!.isEmpty
+                          ? const Text('No wills found')
+                          : ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              padding: EdgeInsets.symmetric(
+                                  vertical: SizeUtils.verticalBlockSize * 1),
+                              itemCount: willsList!.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return WillItem(
+                                  weiAmmount: willsList![index].weiAmmount,
+                                  lastActivity: willsList![index].lastActivity,
+                                  ownerAddress: willsList![index].ownerAddress,
+                                  recipientAddress:
+                                      willsList![index].recipientAddress,
+                                  redemptionDate:
+                                      willsList![index].redemptionDate,
+                                );
+                              })
+                      : const Text(
+                          'Error loading owned wills',
+                          style: TextStyle(color: Colors.red),
+                        ))),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           bool? result = await Utils.navigateToPage(

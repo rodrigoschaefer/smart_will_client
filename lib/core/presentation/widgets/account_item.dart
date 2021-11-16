@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:smart_will_client/core/presentation/widgets/rounded_button.dart';
 import 'package:smart_will_client/core/util/size_utils.dart';
 
-
 class AccountItem extends StatelessWidget {
   final String address;
   final onTapDelete;
@@ -22,14 +21,16 @@ class AccountItem extends StatelessWidget {
             children: [
               Flexible(
                   child: InkWell(
-                child: Text(address),
+                child: Text(address,
+                    style: const TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold)),
                 onTap: onTapAddress,
               )),
               IconButton(
                 icon: Icon(
                   Icons.delete,
                   size: SizeUtils.horizontalBlockSize * 8,
-                  color: Theme.of(context).primaryColor,
+                  color: Colors.amber,
                 ),
                 onPressed: () {
                   showDialog(
@@ -39,7 +40,7 @@ class AccountItem extends StatelessWidget {
                       return AlertDialog(
                           scrollable: true,
                           actionsOverflowDirection: VerticalDirection.down,
-                          backgroundColor: Colors.amber,
+                          backgroundColor: Colors.white,
                           shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(
                               Radius.circular(12.0),
@@ -51,7 +52,7 @@ class AccountItem extends StatelessWidget {
                           actions: [
                             RoundedButton(
                               text: 'Yes',
-                              backgroundColor: Colors.lightBlueAccent,
+                              backgroundColor: Colors.lightBlue,
                               onTap: onTapDelete,
                             ),
                             const SizedBox(
@@ -59,7 +60,7 @@ class AccountItem extends StatelessWidget {
                             ),
                             RoundedButton(
                                 text: 'Cancel',
-                                backgroundColor: Colors.lightBlueAccent,
+                                backgroundColor: Colors.lightBlue,
                                 onTap: () {
                                   Navigator.pop(context);
                                 })

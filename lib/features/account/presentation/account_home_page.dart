@@ -50,7 +50,6 @@ class AccountHomePage extends StatelessWidget {
                 children: <Widget>[
                   RoundedButton(
                     text: 'Owned Wills',
-                    backgroundColor: Colors.amber,
                     onTap: () => Utils.navigateToPage(
                         context,
                         AccountOwnedWillsPage(
@@ -62,7 +61,6 @@ class AccountHomePage extends StatelessWidget {
                   ),
                   RoundedButton(
                     text: 'Recipient Wills',
-                    backgroundColor: Colors.amber,
                     onTap: () => Utils.navigateToPage(
                         context,
                         AccountRecipientWillsPage(

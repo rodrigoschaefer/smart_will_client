@@ -12,8 +12,8 @@ class RoundedButton extends StatelessWidget {
 
   RoundedButton(
       {required this.text,
-      this.backgroundColor = Colors.amber,
-      this.textColor = Colors.black,
+      this.backgroundColor = Colors.blue,
+      this.textColor = Colors.white,
       this.borderRadius = 40,
       this.onTap,
       this.padding = const EdgeInsets.all(12),
@@ -36,7 +36,7 @@ class RoundedButton extends StatelessWidget {
               Flexible(
                   child: Text(
                 text,
-                style: TextStyle(fontSize: fontSize),
+                style: TextStyle(fontSize: fontSize, color: textColor),
               ))
             ],
           )),

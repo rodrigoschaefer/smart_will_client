@@ -27,11 +27,68 @@ class WillItem extends StatelessWidget {
       child: Padding(
           padding: const EdgeInsets.all(10),
           child: Column(mainAxisSize: MainAxisSize.min, children: [
-            Flexible(child: Text(ownerAddress)),
-            Flexible(child: Text(recipientAddress)),
-            Text(Utils.formatDateTime(context, redemptionDate)),
-            Text(Utils.weiToEther(weiAmmount).toDouble().toStringAsFixed(8)),
-            Text(Utils.formatDateTime(context, lastActivity)),
+            Row(children: [
+              const Padding(
+                padding: EdgeInsets.only(right: 5),
+                child: Text(
+                  'Owner:',
+                  style: TextStyle(
+                      color: Colors.amber, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Flexible(child: Text(ownerAddress))
+            ]),
+            Row(children: [
+              const Padding(
+                padding: EdgeInsets.only(right: 5),
+                child: Text(
+                  'Recipient:',
+                  style: TextStyle(
+                      color: Colors.amber, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Flexible(child: Text(recipientAddress))
+            ]),
+            Row(children: [
+              const Padding(
+                padding: EdgeInsets.only(right: 5),
+                child: Text(
+                  'Redemption date:',
+                  style: TextStyle(
+                      color: Colors.amber, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Flexible(
+                child: Text(Utils.formatDateTime(context, redemptionDate)),
+              )
+            ]),
+            Row(children: [
+              const Padding(
+                padding: EdgeInsets.only(right: 5),
+                child: Text(
+                  'Ether:',
+                  style: TextStyle(
+                      color: Colors.amber, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Flexible(
+                child: Text(
+                    Utils.weiToEther(weiAmmount).toDouble().toStringAsFixed(8)),
+              )
+            ]),
+            Row(children: [
+              const Padding(
+                padding: EdgeInsets.only(right: 5),
+                child: Text(
+                  'Last activity:',
+                  style: TextStyle(
+                      color: Colors.amber, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Flexible(
+                child: Text(Utils.formatDateTime(context, lastActivity)),
+              )
+            ])
           ])),
     );
   }

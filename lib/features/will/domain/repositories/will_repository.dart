@@ -6,4 +6,5 @@ abstract class WillRepository {
   Future<bool> createWill(String ownerAddress, String recipientAddress,
       BigInt weiAmmount, DateTime redemptionDate);
   Future<bool> redeemWill(recipientAddress, id);
+  Future<bool> refundWill(ownerAddress, id);
 }

@@ -77,6 +77,11 @@ class _AccountOwnedWillsPageState extends State<AccountOwnedWillsPage> {
                                       willsList![index].recipientAddress,
                                   redemptionDate:
                                       willsList![index].redemptionDate,
+                                  onTapWillDelete: () {
+                                    widget.willRepository.refundWill(
+                                        willsList![index].ownerAddress,
+                                        willsList![index].id);
+                                  },
                                 );
                               })
                       : const Text(

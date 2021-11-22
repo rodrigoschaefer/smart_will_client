@@ -29,4 +29,9 @@ class WillRepositoryLocalImpl implements WillRepository {
   Future<bool> redeemWill(recipientAddress, id) {
     return _willDatasource.redeemWill(recipientAddress, id);
   }
+
+  @override
+  Future<bool> refundWill(ownerAddress, id) {
+    return _willDatasource.refundWill(ownerAddress, id);
+  }
 }

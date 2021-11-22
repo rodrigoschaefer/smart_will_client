@@ -13,6 +13,7 @@ class WillItem extends StatelessWidget {
   DateTime redemptionDate;
   final onTapWillDelete;
   final onTapWill;
+  final onTapWillRedeem;
 
   WillItem(
       {required this.weiAmmount,
@@ -21,7 +22,8 @@ class WillItem extends StatelessWidget {
       required this.recipientAddress,
       required this.redemptionDate,
       this.onTapWill,
-      this.onTapWillDelete});
+      this.onTapWillDelete,
+      this.onTapWillRedeem});
 
   @override
   Widget build(BuildContext context) {
@@ -112,25 +114,36 @@ class WillItem extends StatelessWidget {
                       ),
                     )
                   ]),
-              if (_isRedeemable())
+              if (onTapWillDelete != null)
                 IconButton(
                   icon: Icon(
                     Icons.delete,
                     size: SizeUtils.horizontalBlockSize * 8,
                     color: Colors.amber,
                   ),
-                  onPressed: () => _deleteWillAction(context),
+                  onPressed: () => _dialog(
+                      context,
+                      'Are you sure you want to delete this will? This cannot be reversed!',
+                      onTapWillDelete),
+                ),
+              if (onTapWillRedeem != null && isRedeemable())
+                IconButton(
+                  icon: Icon(
+                    Icons.monetization_on,
+                    size: SizeUtils.horizontalBlockSize * 8,
+                    color: Colors.amber,
+                  ),
+                  onPressed: () => _dialog(
+                      context,
+                      'Are you sure you want to redeem this will?',
+                      onTapWillRedeem),
                 ),
             ],
           )),
     );
   }
 
-  _isRedeemable() {
-    return true;
-  }
-
-  _deleteWillAction(context) {
+  _dialog(context, message, onYes) {
     showDialog(
       context: context,
       barrierDismissible: true,
@@ -144,14 +157,12 @@ class WillItem extends StatelessWidget {
                 Radius.circular(12.0),
               ),
             ),
-            title: const Text(
-                'Are you sure you want to delete this will? This cannot be reversed!',
-                style: TextStyle(color: Colors.blue)),
+            title: Text(message, style: const TextStyle(color: Colors.blue)),
             actions: [
               RoundedButton(
                 text: 'Yes',
                 backgroundColor: Colors.lightBlueAccent,
-                onTap: onTapWillDelete,
+                onTap: onYes,
               ),
               const SizedBox(
                 height: 10,
@@ -167,49 +178,10 @@ class WillItem extends StatelessWidget {
     );
   }
 
-  _deleteWillWidget(context) {
-    return IconButton(
-      icon: Icon(
-        Icons.delete,
-        size: SizeUtils.horizontalBlockSize * 8,
-        color: Colors.amber,
-      ),
-      onPressed: () {
-        showDialog(
-          context: context,
-          barrierDismissible: true,
-          builder: (context) {
-            return AlertDialog(
-                scrollable: true,
-                actionsOverflowDirection: VerticalDirection.down,
-                backgroundColor: Colors.white,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(12.0),
-                  ),
-                ),
-                title: const Text(
-                    'Are you sure you want to delete this will? This cannot be reversed!'),
-                // ignore: prefer_const_literals_to_create_immutables
-                actions: [
-                  RoundedButton(
-                    text: 'Yes',
-                    backgroundColor: Colors.lightBlue,
-                    onTap: () {},
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  RoundedButton(
-                      text: 'Cancel',
-                      backgroundColor: Colors.lightBlue,
-                      onTap: () {
-                        Navigator.pop(context);
-                      })
-                ]);
-          },
-        );
-      },
-    );
+  bool isRedeemable() {
+    var now = DateTime.now();
+    return redemptionDate.isBefore(now) &&
+        (lastActivity == null ||
+            lastActivity!.isBefore(now.subtract(const Duration(days: 180))));
   }
 }

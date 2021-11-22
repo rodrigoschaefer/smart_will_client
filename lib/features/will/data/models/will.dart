@@ -29,4 +29,6 @@ class Will {
       recipientAddress: (fields[5] as EthereumAddress).hex,
     );
   }
+
+ 
 }

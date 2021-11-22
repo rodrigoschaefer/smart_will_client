@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:smart_will_client/core/util/size_utils.dart';
+import 'package:smart_will_client/features/will/data/models/will.dart';
 import 'package:smart_will_client/features/will/domain/repositories/will_repository.dart';
+import 'package:smart_will_client/features/will/presentation/widgets/will_item.dart';
 
 class AccountRecipientWillsPage extends StatefulWidget {
   final address;
   WillRepository willRepository;
 
-  AccountRecipientWillsPage({ required this.address,required this.willRepository});
+  AccountRecipientWillsPage(
+      {required this.address, required this.willRepository});
 
   @override
   State<AccountRecipientWillsPage> createState() =>
@@ -13,6 +17,28 @@ class AccountRecipientWillsPage extends StatefulWidget {
 }
 
 class _AccountRecipientWillsPageState extends State<AccountRecipientWillsPage> {
+  List<Will>? willsList = [];
+  late bool isFetchingWills;
+
+  @override
+  void initState() {
+    super.initState();
+    isFetchingWills = true;
+    init();
+  }
+
+  init() async {
+    try {
+      willsList = await widget.willRepository.getRecipientWills(widget.address);
+    } catch (e) {
+      willsList = null;
+    }
+    print('FOUND ${willsList?.length} WILLS!');
+    setState(() {
+      isFetchingWills = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,11 +50,39 @@ class _AccountRecipientWillsPageState extends State<AccountRecipientWillsPage> {
       body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[],
-            ),
-          )),
+              child: isFetchingWills
+                  ? const CircularProgressIndicator(
+                      color: Colors.blue,
+                    )
+                  : willsList != null
+                      ? willsList!.isEmpty
+                          ? const Text('No wills found')
+                          : ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              padding: EdgeInsets.symmetric(
+                                  vertical: SizeUtils.verticalBlockSize * 1),
+                              itemCount: willsList!.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return WillItem(
+                                  weiAmmount: willsList![index].weiAmmount,
+                                  lastActivity: willsList![index].lastActivity,
+                                  ownerAddress: willsList![index].ownerAddress,
+                                  recipientAddress:
+                                      willsList![index].recipientAddress,
+                                  redemptionDate:
+                                      willsList![index].redemptionDate,
+                                  onTapWillRedeem: () {
+                                    widget.willRepository.redeemWill(
+                                        willsList![index].recipientAddress,
+                                        willsList![index].id);
+                                  },
+                                );
+                              })
+                      : const Text(
+                          'Error loading owned wills',
+                          style: TextStyle(color: Colors.red),
+                        ))),
     );
   }
 }

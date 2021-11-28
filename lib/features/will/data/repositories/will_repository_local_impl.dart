@@ -26,12 +26,32 @@ class WillRepositoryLocalImpl implements WillRepository {
   }
 
   @override
-  Future<bool> redeemWill(recipientAddress, id) {
-    return _willDatasource.redeemWill(recipientAddress, id);
+  Future<String?> redeemWill(recipientAddress, id) async {
+    try {
+      await _willDatasource.redeemWill(recipientAddress, id);
+      return null;
+    } catch (e) {
+      return e.toString();
+    }
   }
 
   @override
-  Future<bool> refundWill(ownerAddress, id) {
-    return _willDatasource.refundWill(ownerAddress, id);
+  Future<String?> refundWill(ownerAddress, id) async {
+    try {
+      await _willDatasource.refundWill(ownerAddress, id);
+      return null;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  @override
+  Future<String?> registerActivity(ownerAddress, id) async {
+    try {
+      await _willDatasource.registerActivity(ownerAddress, id);
+      return null;
+    } catch (e) {
+      return e.toString();
+    }
   }
 }

@@ -29,6 +29,25 @@
       {
         "indexed": false,
         "internalType": "uint256",
+        "name": "blockTime",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "redemptionTime",
+        "type": "uint256"
+      }
+    ],
+    "name": "RedemptionError",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
         "name": "id",
         "type": "uint256"
       },
@@ -75,6 +94,18 @@
         "internalType": "uint256",
         "name": "id",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "blockTime",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "redemptionTime",
+        "type": "uint256"
       }
     ],
     "name": "WillRedeemed",
@@ -98,104 +129,6 @@
     ],
     "name": "WillRefunded",
     "type": "event"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "willsByOwner",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "id",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "owner",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "ammount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "redemptionDate",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "lastActivity",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address payable",
-        "name": "recipient",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "willsByRecipient",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "id",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "owner",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "ammount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "redemptionDate",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "lastActivity",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address payable",
-        "name": "recipient",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
   },
   {
     "inputs": [
@@ -275,6 +208,16 @@
             "internalType": "address payable",
             "name": "recipient",
             "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "redeemed",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "refunded",
+            "type": "bool"
           }
         ],
         "internalType": "struct SmartWill.Will",
@@ -283,25 +226,6 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "id",
-        "type": "uint256"
-      }
-    ],
-    "name": "refundWill",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -345,6 +269,16 @@
             "internalType": "address payable",
             "name": "recipient",
             "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "redeemed",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "refunded",
+            "type": "bool"
           }
         ],
         "internalType": "struct SmartWill.Will[]",
@@ -396,6 +330,16 @@
             "internalType": "address payable",
             "name": "recipient",
             "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "redeemed",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "refunded",
+            "type": "bool"
           }
         ],
         "internalType": "struct SmartWill.Will[]",
@@ -427,7 +371,20 @@
         "type": "uint256"
       }
     ],
-    "name": "registerActivy",
+    "name": "refundWill",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      }
+    ],
+    "name": "registerActivity",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

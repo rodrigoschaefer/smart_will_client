@@ -9,7 +9,6 @@ import 'package:smart_will_client/features/will/data/models/will.dart';
 import 'package:smart_will_client/features/will/domain/repositories/will_repository.dart';
 import 'package:smart_will_client/features/will/presentation/create_will_page.dart';
 import 'package:smart_will_client/features/will/presentation/widgets/will_item.dart';
-import 'package:web3dart/web3dart.dart';
 
 class AccountOwnedWillsPage extends StatefulWidget {
   final address;
@@ -28,13 +27,16 @@ class _AccountOwnedWillsPageState extends State<AccountOwnedWillsPage> {
   @override
   void initState() {
     super.initState();
-    isFetchingWills = true;
-    init();
+    _fetchWills();
   }
 
-  init() async {
+  _fetchWills() async {
+    setState(() {
+      isFetchingWills = true;
+    });
     try {
       willsList = await widget.willRepository.getOwnedWills(widget.address);
+      //_injectTestAccount();
     } catch (e) {
       willsList = null;
     }
@@ -63,8 +65,7 @@ class _AccountOwnedWillsPageState extends State<AccountOwnedWillsPage> {
                       ? willsList!.isEmpty
                           ? const Text('No wills found')
                           : ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
+                              shrinkWrap: false,
                               padding: EdgeInsets.symmetric(
                                   vertical: SizeUtils.verticalBlockSize * 1),
                               itemCount: willsList!.length,
@@ -77,8 +78,21 @@ class _AccountOwnedWillsPageState extends State<AccountOwnedWillsPage> {
                                       willsList![index].recipientAddress,
                                   redemptionDate:
                                       willsList![index].redemptionDate,
-                                  onTapWillDelete: () {
-                                    widget.willRepository.refundWill(
+                                  redeemed: willsList![index].redeemed,
+                                  refunded: willsList![index].refunded,
+                                  onTapWillRefund: () async {
+                                    var result = await widget.willRepository
+                                        .refundWill(
+                                            willsList![index].ownerAddress,
+                                            willsList![index].id);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content: Text(
+                                                result ?? 'Will refunded!')));
+                                    if (result == null) _fetchWills();
+                                  },
+                                  onTapRegisterActivity: () async {
+                                    widget.willRepository.registerActivity(
                                         willsList![index].ownerAddress,
                                         willsList![index].id);
                                   },
@@ -109,9 +123,9 @@ class _AccountOwnedWillsPageState extends State<AccountOwnedWillsPage> {
 
   void _injectTestAccount() {
     AccountDatasource(Constants.accountBox).store(Account(
-        address: '0xfd2Cc0AE059F54b1917Ac41a46C496e23f73cD15',
+        address: '0xfa67329C59457b31a58d797d3970d11c96Eb6702',
         balanceWei: 100));
-    PrivateKeyDatasource.store('0xfd2Cc0AE059F54b1917Ac41a46C496e23f73cD15',
-        '4a691e024463b81a85c14299e677bdc74c5c497d1b139e7bbe7301cbb8a72c7f');
+    PrivateKeyDatasource.store('0xfa67329C59457b31a58d797d3970d11c96Eb6702',
+        'bc632360b0afcd103367b1911d9a7195c49aeea21002b9840f6724ff0b2f7455');
   }
 }

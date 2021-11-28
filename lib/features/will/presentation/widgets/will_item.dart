@@ -11,9 +11,12 @@ class WillItem extends StatelessWidget {
   BigInt weiAmmount;
   DateTime? lastActivity;
   DateTime redemptionDate;
-  final onTapWillDelete;
+  bool redeemed;
+  bool refunded;
+  final onTapWillRefund;
   final onTapWill;
   final onTapWillRedeem;
+  final onTapRegisterActivity;
 
   WillItem(
       {required this.weiAmmount,
@@ -21,9 +24,12 @@ class WillItem extends StatelessWidget {
       required this.ownerAddress,
       required this.recipientAddress,
       required this.redemptionDate,
+      required this.redeemed,
+      required this.refunded,
       this.onTapWill,
-      this.onTapWillDelete,
-      this.onTapWillRedeem});
+      this.onTapWillRefund,
+      this.onTapWillRedeem,
+      this.onTapRegisterActivity});
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +92,24 @@ class WillItem extends StatelessWidget {
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
+                        const Padding(
+                          padding: EdgeInsets.only(right: 5),
+                          child: Text(
+                            'Redeemed:',
+                            style: TextStyle(
+                                color: Colors.amber,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(right: 5),
+                          child: Text(
+                            'Refunded:',
+                            style: TextStyle(
+                                color: Colors.amber,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
                       ],
                     ),
                     Expanded(
@@ -110,34 +134,55 @@ class WillItem extends StatelessWidget {
                               .toDouble()
                               .toStringAsFixed(8)),
                           Text(Utils.formatDateTime(context, lastActivity)),
+                          Text(redeemed ? 'Yes' : 'No'),
+                          Text(refunded ? 'Yes' : 'No'),
                         ],
                       ),
                     )
                   ]),
-              if (onTapWillDelete != null)
-                IconButton(
-                  icon: Icon(
-                    Icons.delete,
-                    size: SizeUtils.horizontalBlockSize * 8,
-                    color: Colors.amber,
-                  ),
-                  onPressed: () => _dialog(
-                      context,
-                      'Are you sure you want to delete this will? This cannot be reversed!',
-                      onTapWillDelete),
-                ),
-              if (onTapWillRedeem != null && isRedeemable())
-                IconButton(
-                  icon: Icon(
-                    Icons.monetization_on,
-                    size: SizeUtils.horizontalBlockSize * 8,
-                    color: Colors.amber,
-                  ),
-                  onPressed: () => _dialog(
-                      context,
-                      'Are you sure you want to redeem this will?',
-                      onTapWillRedeem),
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (onTapWillRefund != null && isRefundable())
+                    IconButton(
+                      icon: Icon(
+                        Icons.delete,
+                        size: SizeUtils.horizontalBlockSize * 8,
+                        color: Colors.amber,
+                      ),
+                      onPressed: () => _dialog(
+                          context,
+                          'Are you sure you want to delete this will? This cannot be reversed!',
+                          onTapWillRefund),
+                    ),
+                  if (onTapWillRedeem != null && isRedeemable())
+                    IconButton(
+                      icon: Icon(
+                        Icons.monetization_on,
+                        size: SizeUtils.horizontalBlockSize * 8,
+                        color: Colors.amber,
+                      ),
+                      onPressed: () => _dialog(
+                          context,
+                          'Are you sure you want to redeem this will?',
+                          onTapWillRedeem),
+                    ),
+                  if (onTapRegisterActivity != null &&
+                      isRedeemable() &&
+                      isRefundable())
+                    IconButton(
+                      icon: Icon(
+                        Icons.access_time,
+                        size: SizeUtils.horizontalBlockSize * 8,
+                        color: Colors.amber,
+                      ),
+                      onPressed: () => _dialog(
+                          context,
+                          'Are you sure you want to register activity for this will?',
+                          onTapRegisterActivity),
+                    ),
+                ],
+              )
             ],
           )),
     );
@@ -162,7 +207,10 @@ class WillItem extends StatelessWidget {
               RoundedButton(
                 text: 'Yes',
                 backgroundColor: Colors.lightBlueAccent,
-                onTap: onYes,
+                onTap: () {
+                  Navigator.pop(context);
+                  onYes();
+                },
               ),
               const SizedBox(
                 height: 10,
@@ -182,6 +230,12 @@ class WillItem extends StatelessWidget {
     var now = DateTime.now();
     return redemptionDate.isBefore(now) &&
         (lastActivity == null ||
-            lastActivity!.isBefore(now.subtract(const Duration(days: 180))));
+            lastActivity!.isBefore(now.subtract(const Duration(days: 180)))) &&
+        !redeemed &&
+        !refunded;
+  }
+
+  bool isRefundable() {
+    return !redeemed && !refunded;
   }
 }

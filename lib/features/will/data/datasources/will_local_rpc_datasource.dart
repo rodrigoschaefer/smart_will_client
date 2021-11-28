@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:smart_will_client/core/util/constants.dart';
@@ -14,6 +12,7 @@ abstract class WillDatasource {
       BigInt weiAmmount, DateTime redemptionDate);
   Future<bool> redeemWill(recipientAddress, id);
   Future<bool> refundWill(ownerAddress, id);
+  Future<bool> registerActivity(ownerAddress, id);
 }
 
 class WillLocalRpcDatasource implements WillDatasource {
@@ -25,7 +24,8 @@ class WillLocalRpcDatasource implements WillDatasource {
       getRecipientWillsContractFunction,
       createWillContractFunction,
       redeemWillContractFunction,
-      refundWillContractFunction;
+      refundWillContractFunction,
+      registerActivityContractFunction;
   String rpcUrl = 'http://10.0.2.2:7545';
 
   WillLocalRpcDatasource() {
@@ -37,7 +37,7 @@ class WillLocalRpcDatasource implements WillDatasource {
   }
 
   init() async {
-    String abi = await rootBundle.loadString('abis/SmartWill.json');
+    String abi = await rootBundle.loadString('lib/abis/SmartWill.abi.json');
     contract = DeployedContract(
         ContractAbi.fromJson(abi, "SmartWill"), contractAddress);
     getOwnedWillsContractFunction = contract.function('getWillsByOwner');
@@ -46,6 +46,7 @@ class WillLocalRpcDatasource implements WillDatasource {
     createWillContractFunction = contract.function('createWill');
     redeemWillContractFunction = contract.function('redeemWill');
     refundWillContractFunction = contract.function('refundWill');
+    registerActivityContractFunction = contract.function('registerActivity');
   }
 
   @override
@@ -62,33 +63,11 @@ class WillLocalRpcDatasource implements WillDatasource {
             contract: contract,
             function: createWillContractFunction,
             parameters: [
-              BigInt.from(redemptionDate.millisecondsSinceEpoch *
+              BigInt.from(redemptionDate.millisecondsSinceEpoch /
                   1000), // Ethereum treats dates as seconds since linux epoch
               EthereumAddress.fromHex(recipientAddress)
             ],
             value: EtherAmount.fromUnitAndValue(EtherUnit.wei, weiAmmount)),
-      );
-      return true;
-    } catch (e) {
-      print('error! $e');
-      return false;
-    }
-  }
-
-  @override
-  Future<bool> redeemWill(recipientAddress, id) async {
-    try {
-      String? pkey = await PrivateKeyDatasource.read(recipientAddress);
-      if (pkey == null) return false;
-      final credentials = EthPrivateKey.fromHex(pkey);
-      var result = await ethClient.sendTransaction(
-        credentials,
-        Transaction.callContract(
-          from: EthereumAddress.fromHex(recipientAddress),
-          contract: contract,
-          function: createWillContractFunction,
-          parameters: [id],
-        ),
       );
       return true;
     } catch (e) {
@@ -125,11 +104,50 @@ class WillLocalRpcDatasource implements WillDatasource {
 
   @override
   Future<bool> refundWill(ownerAddress, id) async {
-    final data = await ethClient.call(
-        sender: EthereumAddress.fromHex(ownerAddress),
+    String? pkey = await PrivateKeyDatasource.read(ownerAddress);
+    if (pkey == null) return false;
+    final credentials = EthPrivateKey.fromHex(pkey);
+    var result = await ethClient.sendTransaction(
+      credentials,
+      Transaction.callContract(
+          from: EthereumAddress.fromHex(ownerAddress),
+          contract: contract,
+          function: refundWillContractFunction,
+          parameters: [BigInt.from(id)]),
+    );
+    return true;
+  }
+
+  @override
+  Future<bool> redeemWill(recipientAddress, id) async {
+    String? pkey = await PrivateKeyDatasource.read(recipientAddress);
+    if (pkey == null) return false;
+    final credentials = EthPrivateKey.fromHex(pkey);
+    var result = await ethClient.sendTransaction(
+      credentials,
+      Transaction.callContract(
+        from: EthereumAddress.fromHex(recipientAddress),
         contract: contract,
-        function: refundWillContractFunction,
-        params: [BigInt.from(id)]);
-    return data as bool;
+        function: redeemWillContractFunction,
+        parameters: [BigInt.from(id)],
+      ),
+    );
+    return true;
+  }
+
+  @override
+  Future<bool> registerActivity(ownerAddress, id) async {
+    String? pkey = await PrivateKeyDatasource.read(ownerAddress);
+    if (pkey == null) return false;
+    final credentials = EthPrivateKey.fromHex(pkey);
+    var result = await ethClient.sendTransaction(
+      credentials,
+      Transaction.callContract(
+          from: EthereumAddress.fromHex(ownerAddress),
+          contract: contract,
+          function: registerActivityContractFunction,
+          parameters: [BigInt.from(id)]),
+    );
+    return true;
   }
 }

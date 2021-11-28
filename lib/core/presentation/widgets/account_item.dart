@@ -47,7 +47,9 @@ class AccountItem extends StatelessWidget {
                             ),
                           ),
                           title: const Text(
-                              'Are you sure you want to delete this wallet? This cannot be reversed!'),
+                            'Are you sure you want to delete this wallet? This cannot be reversed!',
+                            style: TextStyle(color: Colors.blue),
+                          ),
                           // ignore: prefer_const_literals_to_create_immutables
                           actions: [
                             RoundedButton(

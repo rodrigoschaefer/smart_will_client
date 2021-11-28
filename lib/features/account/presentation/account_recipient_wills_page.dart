@@ -23,11 +23,13 @@ class _AccountRecipientWillsPageState extends State<AccountRecipientWillsPage> {
   @override
   void initState() {
     super.initState();
-    isFetchingWills = true;
-    init();
+    _fetchWills();
   }
 
-  init() async {
+  _fetchWills() async {
+    setState(() {
+      isFetchingWills = true;
+    });
     try {
       willsList = await widget.willRepository.getRecipientWills(widget.address);
     } catch (e) {
@@ -58,8 +60,6 @@ class _AccountRecipientWillsPageState extends State<AccountRecipientWillsPage> {
                       ? willsList!.isEmpty
                           ? const Text('No wills found')
                           : ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
                               padding: EdgeInsets.symmetric(
                                   vertical: SizeUtils.verticalBlockSize * 1),
                               itemCount: willsList!.length,
@@ -72,10 +72,24 @@ class _AccountRecipientWillsPageState extends State<AccountRecipientWillsPage> {
                                       willsList![index].recipientAddress,
                                   redemptionDate:
                                       willsList![index].redemptionDate,
-                                  onTapWillRedeem: () {
-                                    widget.willRepository.redeemWill(
-                                        willsList![index].recipientAddress,
-                                        willsList![index].id);
+                                  redeemed: willsList![index].redeemed,
+                                  refunded: willsList![index].refunded,
+                                  onTapWillRedeem: () async {
+                                    String? errorMsg =
+                                        await widget.willRepository.redeemWill(
+                                            willsList![index].recipientAddress,
+                                            willsList![index].id);
+                                    if (errorMsg == null) {
+                                      const snackBar = SnackBar(
+                                          content: Text('Will redeemed!'));
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(snackBar);
+                                    } else {
+                                      var snackBar =
+                                          SnackBar(content: Text(errorMsg));
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(snackBar);
+                                    }
                                   },
                                 );
                               })

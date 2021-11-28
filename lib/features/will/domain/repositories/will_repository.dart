@@ -5,6 +5,7 @@ abstract class WillRepository {
   Future<List<Will>> getRecipientWills(recipientAddress);
   Future<bool> createWill(String ownerAddress, String recipientAddress,
       BigInt weiAmmount, DateTime redemptionDate);
-  Future<bool> redeemWill(recipientAddress, id);
-  Future<bool> refundWill(ownerAddress, id);
+  Future<String?> redeemWill(recipientAddress, id);
+  Future<String?> refundWill(ownerAddress, id);
+  Future<void> registerActivity(ownerAddress, id);
 }

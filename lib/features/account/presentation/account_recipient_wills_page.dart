@@ -79,17 +79,11 @@ class _AccountRecipientWillsPageState extends State<AccountRecipientWillsPage> {
                                         await widget.willRepository.redeemWill(
                                             willsList![index].recipientAddress,
                                             willsList![index].id);
-                                    if (errorMsg == null) {
-                                      const snackBar = SnackBar(
-                                          content: Text('Will redeemed!'));
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(snackBar);
-                                    } else {
-                                      var snackBar =
-                                          SnackBar(content: Text(errorMsg));
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(snackBar);
-                                    }
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content: Text(
+                                                errorMsg ?? 'Will refunded!')));
+                                    if (errorMsg == null) _fetchWills();
                                   },
                                 );
                               })

@@ -6,6 +6,7 @@ import 'package:smart_will_client/core/util/utils.dart';
 import 'package:smart_will_client/features/account/data/models/account.dart';
 import 'package:smart_will_client/features/account/data/repositories/account_repository.dart';
 import 'package:smart_will_client/features/account/presentation/account_home_page.dart';
+import 'package:smart_will_client/features/account/presentation/import_account_page.dart';
 import 'package:smart_will_client/features/will/domain/repositories/will_repository.dart';
 
 class HomePage extends StatefulWidget {
@@ -74,8 +75,11 @@ class _HomePageState extends State<HomePage> {
           )),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          Account acc = await _accountRepository.createRandomAccount();
-          print('Account created: ' + acc.address);
+          await Utils.navigateToPage(
+              context,
+              ImportAccountPage(
+                accountRepository: _accountRepository,
+              ));
           setState(() {
             accounts = _accountRepository.getAllAccounts();
           });

@@ -30,7 +30,7 @@ class AccountItem extends StatelessWidget {
                 icon: Icon(
                   Icons.delete,
                   size: SizeUtils.horizontalBlockSize * 8,
-                  color: Colors.amber,
+                  color: Colors.white,
                 ),
                 onPressed: () {
                   showDialog(

@@ -52,7 +52,7 @@ class WillItem extends StatelessWidget {
                           child: Text(
                             'Owner:',
                             style: TextStyle(
-                                color: Colors.amber,
+                                color: Colors.white,
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -61,7 +61,7 @@ class WillItem extends StatelessWidget {
                           child: Text(
                             'Recipient:',
                             style: TextStyle(
-                                color: Colors.amber,
+                                color: Colors.white,
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -70,7 +70,7 @@ class WillItem extends StatelessWidget {
                           child: Text(
                             'Redemption:',
                             style: TextStyle(
-                                color: Colors.amber,
+                                color: Colors.white,
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -79,7 +79,7 @@ class WillItem extends StatelessWidget {
                           child: Text(
                             'Ether:',
                             style: TextStyle(
-                                color: Colors.amber,
+                                color: Colors.white,
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -88,7 +88,7 @@ class WillItem extends StatelessWidget {
                           child: Text(
                             'Last activity:',
                             style: TextStyle(
-                                color: Colors.amber,
+                                color: Colors.white,
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -97,7 +97,7 @@ class WillItem extends StatelessWidget {
                           child: Text(
                             'Redeemed:',
                             style: TextStyle(
-                                color: Colors.amber,
+                                color: Colors.white,
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -106,7 +106,7 @@ class WillItem extends StatelessWidget {
                           child: Text(
                             'Refunded:',
                             style: TextStyle(
-                                color: Colors.amber,
+                                color: Colors.white,
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -148,7 +148,7 @@ class WillItem extends StatelessWidget {
                       icon: Icon(
                         Icons.delete,
                         size: SizeUtils.horizontalBlockSize * 8,
-                        color: Colors.amber,
+                        color: Colors.white,
                       ),
                       onPressed: () => _dialog(
                           context,
@@ -160,7 +160,7 @@ class WillItem extends StatelessWidget {
                       icon: Icon(
                         Icons.monetization_on,
                         size: SizeUtils.horizontalBlockSize * 8,
-                        color: Colors.amber,
+                        color: Colors.white,
                       ),
                       onPressed: () => _dialog(
                           context,
@@ -174,7 +174,7 @@ class WillItem extends StatelessWidget {
                       icon: Icon(
                         Icons.access_time,
                         size: SizeUtils.horizontalBlockSize * 8,
-                        color: Colors.amber,
+                        color: Colors.white,
                       ),
                       onPressed: () => _dialog(
                           context,

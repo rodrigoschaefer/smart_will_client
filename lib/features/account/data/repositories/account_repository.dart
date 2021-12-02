@@ -23,8 +23,18 @@ class AccountRepository {
     var rng = Random.secure();
     EthPrivateKey key = EthPrivateKey.createRandom(rng);
     var address = await key.extractAddress();
-    PrivateKeyDatasource.store(address.hex, hex.encode(key.privateKey));
-    Account acc = Account(address: address.hex, balanceWei: 0);
+    PrivateKeyDatasource.store(address.hexEip55, hex.encode(key.privateKey));
+    Account acc = Account(address: address.hexEip55, balanceWei: 0);
+    _accountDatasource.store(acc);
+    return acc;
+  }
+
+  Future<Account> importAccount(String pKey) async {
+    EthPrivateKey credentials = EthPrivateKey.fromHex(pKey);
+    var address = await credentials.extractAddress();
+    PrivateKeyDatasource.store(
+        address.hexEip55, hex.encode(credentials.privateKey));
+    Account acc = Account(address: address.hexEip55, balanceWei: 0);
     _accountDatasource.store(acc);
     return acc;
   }

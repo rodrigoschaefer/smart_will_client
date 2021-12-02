@@ -10,9 +10,13 @@ class WillRepositoryLocalImpl implements WillRepository {
   @override
   Future<bool> createWill(String ownerAddress, String recipientAddress,
       BigInt weiAmmount, DateTime redemptionDate) async {
-    var result = await _willDatasource.createWill(
-        ownerAddress, recipientAddress, weiAmmount, redemptionDate);
-    return result;
+    try {
+      var result = await _willDatasource.createWill(
+          ownerAddress, recipientAddress, weiAmmount, redemptionDate);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   @override

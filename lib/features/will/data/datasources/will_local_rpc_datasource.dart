@@ -8,11 +8,11 @@ import 'package:web3dart/web3dart.dart';
 abstract class WillDatasource {
   Future<List<Will>> getWillsByOwner(ownerAddress);
   Future<List<Will>> getWillsByRecipient(recipientAddress);
-  Future<bool> createWill(String ownerAddress, String recipientAddress,
+  Future<void> createWill(String ownerAddress, String recipientAddress,
       BigInt weiAmmount, DateTime redemptionDate);
-  Future<bool> redeemWill(recipientAddress, id);
-  Future<bool> refundWill(ownerAddress, id);
-  Future<bool> registerActivity(ownerAddress, id);
+  Future<void> redeemWill(recipientAddress, id);
+  Future<void> refundWill(ownerAddress, id);
+  Future<void> registerActivity(ownerAddress, id);
 }
 
 class WillLocalRpcDatasource implements WillDatasource {
@@ -50,30 +50,24 @@ class WillLocalRpcDatasource implements WillDatasource {
   }
 
   @override
-  Future<bool> createWill(String ownerAddress, String recipientAddress,
+  Future<void> createWill(String ownerAddress, String recipientAddress,
       BigInt weiAmmount, DateTime redemptionDate) async {
-    try {
-      String? pkey = await PrivateKeyDatasource.read(ownerAddress);
-      if (pkey == null) return false;
-      final credentials = EthPrivateKey.fromHex(pkey);
-      var result = await ethClient.sendTransaction(
-        credentials,
-        Transaction.callContract(
-            from: EthereumAddress.fromHex(ownerAddress),
-            contract: contract,
-            function: createWillContractFunction,
-            parameters: [
-              BigInt.from(redemptionDate.millisecondsSinceEpoch /
-                  1000), // Ethereum treats dates as seconds since linux epoch
-              EthereumAddress.fromHex(recipientAddress)
-            ],
-            value: EtherAmount.fromUnitAndValue(EtherUnit.wei, weiAmmount)),
-      );
-      return true;
-    } catch (e) {
-      print('error! $e');
-      return false;
-    }
+    String? pkey = await PrivateKeyDatasource.read(ownerAddress);
+    if (pkey == null) throw Exception('pKey not found');
+    final credentials = EthPrivateKey.fromHex(pkey);
+    var result = await ethClient.sendTransaction(
+      credentials,
+      Transaction.callContract(
+          from: EthereumAddress.fromHex(ownerAddress),
+          contract: contract,
+          function: createWillContractFunction,
+          parameters: [
+            BigInt.from(redemptionDate.millisecondsSinceEpoch /
+                1000), // Ethereum treats dates as seconds since linux epoch
+            EthereumAddress.fromHex(recipientAddress)
+          ],
+          value: EtherAmount.fromUnitAndValue(EtherUnit.wei, weiAmmount)),
+    );
   }
 
   @override
@@ -103,9 +97,9 @@ class WillLocalRpcDatasource implements WillDatasource {
   }
 
   @override
-  Future<bool> refundWill(ownerAddress, id) async {
+  Future<void> refundWill(ownerAddress, id) async {
     String? pkey = await PrivateKeyDatasource.read(ownerAddress);
-    if (pkey == null) return false;
+    if (pkey == null) throw Exception('pKey not found');
     final credentials = EthPrivateKey.fromHex(pkey);
     var result = await ethClient.sendTransaction(
       credentials,
@@ -115,13 +109,12 @@ class WillLocalRpcDatasource implements WillDatasource {
           function: refundWillContractFunction,
           parameters: [BigInt.from(id)]),
     );
-    return true;
   }
 
   @override
-  Future<bool> redeemWill(recipientAddress, id) async {
+  Future<void> redeemWill(recipientAddress, id) async {
     String? pkey = await PrivateKeyDatasource.read(recipientAddress);
-    if (pkey == null) return false;
+    if (pkey == null) throw Exception('pKey not found');
     final credentials = EthPrivateKey.fromHex(pkey);
     var result = await ethClient.sendTransaction(
       credentials,
@@ -132,13 +125,12 @@ class WillLocalRpcDatasource implements WillDatasource {
         parameters: [BigInt.from(id)],
       ),
     );
-    return true;
   }
 
   @override
-  Future<bool> registerActivity(ownerAddress, id) async {
+  Future<void> registerActivity(ownerAddress, id) async {
     String? pkey = await PrivateKeyDatasource.read(ownerAddress);
-    if (pkey == null) return false;
+    if (pkey == null) throw Exception('pKey not found');
     final credentials = EthPrivateKey.fromHex(pkey);
     var result = await ethClient.sendTransaction(
       credentials,
@@ -148,6 +140,5 @@ class WillLocalRpcDatasource implements WillDatasource {
           function: registerActivityContractFunction,
           parameters: [BigInt.from(id)]),
     );
-    return true;
   }
 }

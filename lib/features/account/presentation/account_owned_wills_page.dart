@@ -120,12 +120,4 @@ class _AccountOwnedWillsPageState extends State<AccountOwnedWillsPage> {
       ),
     );
   }
-
-  void _injectTestAccount() {
-    AccountDatasource(Constants.accountBox).store(Account(
-        address: '0xfa67329C59457b31a58d797d3970d11c96Eb6702',
-        balanceWei: 100));
-    PrivateKeyDatasource.store('0xfa67329C59457b31a58d797d3970d11c96Eb6702',
-        'bc632360b0afcd103367b1911d9a7195c49aeea21002b9840f6724ff0b2f7455');
-  }
 }

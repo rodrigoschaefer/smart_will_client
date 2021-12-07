@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:smart_will_client/core/util/constants.dart';
 import 'package:smart_will_client/core/util/size_utils.dart';
 import 'package:smart_will_client/core/util/utils.dart';
@@ -81,6 +82,12 @@ class _AccountOwnedWillsPageState extends State<AccountOwnedWillsPage> {
                                   redeemed: willsList![index].redeemed,
                                   refunded: willsList![index].refunded,
                                   onTapWillRefund: () async {
+                                    Loader.show(context,
+                                        isSafeAreaOverlay: false,
+                                        isAppbarOverlay: true,
+                                        isBottomBarOverlay: false,
+                                        progressIndicator:
+                                            const CircularProgressIndicator());
                                     var result = await widget.willRepository
                                         .refundWill(
                                             willsList![index].ownerAddress,
@@ -90,11 +97,25 @@ class _AccountOwnedWillsPageState extends State<AccountOwnedWillsPage> {
                                             content: Text(
                                                 result ?? 'Will refunded!')));
                                     if (result == null) _fetchWills();
+                                    Loader.hide();
                                   },
                                   onTapRegisterActivity: () async {
-                                    widget.willRepository.registerActivity(
-                                        willsList![index].ownerAddress,
-                                        willsList![index].id);
+                                    Loader.show(context,
+                                        isSafeAreaOverlay: false,
+                                        isAppbarOverlay: true,
+                                        isBottomBarOverlay: false,
+                                        progressIndicator:
+                                            const CircularProgressIndicator());
+                                    var result = await widget.willRepository
+                                        .registerActivity(
+                                            willsList![index].ownerAddress,
+                                            willsList![index].id);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content: Text(result ??
+                                                'Activity registered!')));
+                                    if (result == null) _fetchWills();
+                                    Loader.hide();
                                   },
                                 );
                               })

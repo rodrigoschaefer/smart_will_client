@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:smart_will_client/core/util/size_utils.dart';
 import 'package:smart_will_client/features/will/data/models/will.dart';
 import 'package:smart_will_client/features/will/domain/repositories/will_repository.dart';
@@ -75,6 +76,12 @@ class _AccountRecipientWillsPageState extends State<AccountRecipientWillsPage> {
                                   redeemed: willsList![index].redeemed,
                                   refunded: willsList![index].refunded,
                                   onTapWillRedeem: () async {
+                                    Loader.show(context,
+                                        isSafeAreaOverlay: false,
+                                        isAppbarOverlay: true,
+                                        isBottomBarOverlay: false,
+                                        progressIndicator:
+                                            const CircularProgressIndicator());
                                     String? errorMsg =
                                         await widget.willRepository.redeemWill(
                                             willsList![index].recipientAddress,
@@ -82,13 +89,14 @@ class _AccountRecipientWillsPageState extends State<AccountRecipientWillsPage> {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(
                                             content: Text(
-                                                errorMsg ?? 'Will refunded!')));
+                                                errorMsg ?? 'Will redeemed!')));
                                     if (errorMsg == null) _fetchWills();
+                                    Loader.hide();
                                   },
                                 );
                               })
                       : const Text(
-                          'Error loading owned wills',
+                          'Error loading recipient wills',
                           style: TextStyle(color: Colors.red),
                         ))),
     );

@@ -21,7 +21,7 @@ class ImportAccountPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               const Text(
-                'Add the private key',
+                'Enter the private key',
                 style: TextStyle(color: Colors.blue, fontSize: 18),
               ),
               const SizedBox(
@@ -37,7 +37,7 @@ class ImportAccountPage extends StatelessWidget {
               Container(
                   padding: const EdgeInsets.all(30),
                   child: RoundedButton(
-                    text: 'Import',
+                    text: 'Import account',
                     onTap: () async {
                       Account acc = await accountRepository
                           .importAccount(_pKeyController.text);

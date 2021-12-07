@@ -25,6 +25,7 @@ class _CreateWillPageState extends State<CreateWillPage> {
 
   final TextEditingController _ammountController =
       TextEditingController(text: '1');
+  bool isCreatingWill = false;
 
   @override
   void initState() {
@@ -103,19 +104,29 @@ class _CreateWillPageState extends State<CreateWillPage> {
             ),
           )),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          var ammountWei = EtherAmount.fromUnitAndValue(
-                  EtherUnit.ether, _ammountController.text)
-              .getInWei;
-          bool result = await widget._willRepository.createWill(
-              widget.ownerAddress,
-              widget._recipientController.text,
-              ammountWei,
-              DateTime.now());
-          print('RESULT: $result');
-          Navigator.of(context).pop();
-        },
-        child: const Icon(Icons.check),
+        onPressed: !isCreatingWill
+            ? () async {
+                setState(() {
+                  isCreatingWill = true;
+                });
+                var ammountWei = EtherAmount.fromUnitAndValue(
+                        EtherUnit.ether, _ammountController.text)
+                    .getInWei;
+                var result = await widget._willRepository.createWill(
+                    widget.ownerAddress,
+                    widget._recipientController.text,
+                    ammountWei,
+                    DateTime.now());
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(result ?? 'Will created!')));
+                Navigator.of(context).pop();
+              }
+            : null,
+        child: !isCreatingWill
+            ? const Icon(Icons.check)
+            : const CircularProgressIndicator(
+                color: Colors.white,
+              ),
       ),
     );
   }

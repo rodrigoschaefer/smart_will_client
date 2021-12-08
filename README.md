@@ -1,2 +1,9 @@
 # smart_will_client
-Manage blockchain based smart wills
+A Flutter frontend to manage smart_will smart contract.
+
+## Features
+- Import account from private key
+- Create will
+- Refund will
+- Redeem will
+- Register activity

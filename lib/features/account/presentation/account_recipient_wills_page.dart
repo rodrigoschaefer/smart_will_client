@@ -6,10 +6,11 @@ import 'package:smart_will_client/features/will/domain/repositories/will_reposit
 import 'package:smart_will_client/features/will/presentation/widgets/will_item.dart';
 
 class AccountRecipientWillsPage extends StatefulWidget {
-  final address;
-  WillRepository willRepository;
+  final String address;
+  final WillRepository willRepository;
 
-  AccountRecipientWillsPage(
+  // ignore: use_key_in_widget_constructors
+  const AccountRecipientWillsPage(
       {required this.address, required this.willRepository});
 
   @override
@@ -36,7 +37,6 @@ class _AccountRecipientWillsPageState extends State<AccountRecipientWillsPage> {
     } catch (e) {
       willsList = null;
     }
-    print('FOUND ${willsList?.length} WILLS!');
     setState(() {
       isFetchingWills = false;
     });

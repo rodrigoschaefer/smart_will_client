@@ -6,19 +6,19 @@ import 'package:smart_will_client/core/util/size_utils.dart';
 import 'package:smart_will_client/core/util/utils.dart';
 
 class WillItem extends StatelessWidget {
-  String ownerAddress;
-  String recipientAddress;
-  BigInt weiAmmount;
-  DateTime? lastActivity;
-  DateTime redemptionDate;
-  bool redeemed;
-  bool refunded;
-  final onTapWillRefund;
-  final onTapWill;
-  final onTapWillRedeem;
-  final onTapRegisterActivity;
+  final String ownerAddress;
+  final String recipientAddress;
+  final BigInt weiAmmount;
+  final DateTime? lastActivity;
+  final DateTime redemptionDate;
+  final bool redeemed;
+  final bool refunded;
+  final VoidCallback? onTapWillRefund;
+  final VoidCallback? onTapWill;
+  final VoidCallback? onTapWillRedeem;
+  final VoidCallback? onTapRegisterActivity;
 
-  WillItem(
+  const WillItem(
       {required this.weiAmmount,
       required this.lastActivity,
       required this.ownerAddress,
@@ -29,7 +29,8 @@ class WillItem extends StatelessWidget {
       this.onTapWill,
       this.onTapWillRefund,
       this.onTapWillRedeem,
-      this.onTapRegisterActivity});
+      this.onTapRegisterActivity,
+      key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

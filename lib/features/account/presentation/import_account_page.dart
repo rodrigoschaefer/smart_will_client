@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:smart_will_client/core/presentation/widgets/rounded_button.dart';
-import 'package:smart_will_client/features/account/data/models/account.dart';
 import 'package:smart_will_client/features/account/data/repositories/account_repository.dart';
 
-import 'package:smart_will_client/features/will/domain/repositories/will_repository.dart';
-
 class ImportAccountPage extends StatelessWidget {
-  late AccountRepository accountRepository;
+  final AccountRepository accountRepository;
   ImportAccountPage({Key? key, required this.accountRepository})
       : super(key: key);
 
-  TextEditingController _pKeyController = TextEditingController();
+  final TextEditingController _pKeyController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +36,7 @@ class ImportAccountPage extends StatelessWidget {
                   child: RoundedButton(
                     text: 'Import account',
                     onTap: () async {
-                      Account acc = await accountRepository
+                      await accountRepository
                           .importAccount(_pKeyController.text);
                       Navigator.pop(context);
                     },

@@ -6,13 +6,12 @@ import 'package:smart_will_client/features/will/domain/repositories/will_reposit
 import 'package:web3dart/web3dart.dart';
 
 class CreateWillPage extends StatefulWidget {
-  String ownerAddress;
-  late TextEditingController _recipientController;
-  WillRepository _willRepository;
+  final String ownerAddress;
 
-  CreateWillPage(this.ownerAddress, this._willRepository) {
-    _recipientController = TextEditingController(text: ownerAddress);
-  }
+  final WillRepository _willRepository;
+
+  const CreateWillPage(this.ownerAddress, this._willRepository, {Key? key})
+      : super(key: key);
 
   @override
   State<CreateWillPage> createState() => _CreateWillPageState();
@@ -25,12 +24,14 @@ class _CreateWillPageState extends State<CreateWillPage> {
 
   final TextEditingController _ammountController =
       TextEditingController(text: '1');
+  late TextEditingController _recipientController;
   bool isCreatingWill = false;
 
   @override
   void initState() {
     _dateController =
         TextEditingController(text: dateFormat.format(DateTime.now()));
+    _recipientController = TextEditingController(text: widget.ownerAddress);
     super.initState();
   }
 
@@ -51,7 +52,7 @@ class _CreateWillPageState extends State<CreateWillPage> {
               children: <Widget>[
                 TextFormField(
                   autovalidateMode: AutovalidateMode.always,
-                  controller: widget._recipientController,
+                  controller: _recipientController,
                   decoration: const InputDecoration(
                     icon: Icon(Icons.wallet_giftcard),
                     labelText: 'Recipient Address',
@@ -114,7 +115,7 @@ class _CreateWillPageState extends State<CreateWillPage> {
                     .getInWei;
                 var result = await widget._willRepository.createWill(
                     widget.ownerAddress,
-                    widget._recipientController.text,
+                    _recipientController.text,
                     ammountWei,
                     DateTime.parse(_dateController.text));
                 ScaffoldMessenger.of(context).showSnackBar(

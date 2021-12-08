@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
-import 'package:smart_will_client/core/util/constants.dart';
 import 'package:smart_will_client/core/util/size_utils.dart';
 import 'package:smart_will_client/core/util/utils.dart';
-import 'package:smart_will_client/features/account/data/datasources/account_datasource.dart';
-import 'package:smart_will_client/features/account/data/datasources/private_key_datasource.dart';
-import 'package:smart_will_client/features/account/data/models/account.dart';
 import 'package:smart_will_client/features/will/data/models/will.dart';
 import 'package:smart_will_client/features/will/domain/repositories/will_repository.dart';
 import 'package:smart_will_client/features/will/presentation/create_will_page.dart';
 import 'package:smart_will_client/features/will/presentation/widgets/will_item.dart';
 
 class AccountOwnedWillsPage extends StatefulWidget {
-  final address;
+  final String address;
   final WillRepository willRepository;
 
-  const AccountOwnedWillsPage({this.address, required this.willRepository});
+  // ignore: use_key_in_widget_constructors
+  const AccountOwnedWillsPage({required this.address, required this.willRepository});
 
   @override
   State<AccountOwnedWillsPage> createState() => _AccountOwnedWillsPageState();
@@ -37,11 +34,9 @@ class _AccountOwnedWillsPageState extends State<AccountOwnedWillsPage> {
     });
     try {
       willsList = await widget.willRepository.getOwnedWills(widget.address);
-      //_injectTestAccount();
     } catch (e) {
       willsList = null;
     }
-    print('FOUND ${willsList?.length} WILLS!');
     setState(() {
       isFetchingWills = false;
     });

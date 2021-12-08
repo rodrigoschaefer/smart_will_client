@@ -3,9 +3,7 @@ import 'dart:io';
 import 'dart:ui' as ui;
 import 'dart:math' as math;
 
-/**
- * Calculates a relative size for consistence over diferent screen sizes
- */
+/// Calculates a relative size for consistence over diferent screen sizes
 class SizeUtils {
 
   static late MediaQueryData _mediaQueryData;

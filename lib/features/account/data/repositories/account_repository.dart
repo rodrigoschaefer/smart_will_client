@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:smart_will_client/core/util/constants.dart';
 import 'package:smart_will_client/features/account/data/datasources/account_datasource.dart';
 import 'package:smart_will_client/features/account/data/datasources/private_key_datasource.dart';
@@ -44,7 +45,7 @@ class AccountRepository {
       _accountDatasource.delete(address);
       PrivateKeyDatasource.delete(address);
     } catch (e) {
-      print('Error deleting account');
+      debugPrint('Error deleting account');
     }
   }
 }

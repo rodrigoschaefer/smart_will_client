@@ -10,9 +10,9 @@ class AccountDatasource {
 
   List<Account> getAll() {
     List<Account> accounts = [];
-    accountBox.values.forEach((e) {
+    for (var e in accountBox.values) {
       accounts.add(e);
-    });
+    }
     return accounts;
   }
 

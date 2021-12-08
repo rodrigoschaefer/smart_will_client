@@ -4,10 +4,11 @@ import 'package:smart_will_client/core/util/size_utils.dart';
 
 class AccountItem extends StatelessWidget {
   final String address;
-  final onTapDelete;
-  final onTapAddress;
+  final VoidCallback onTapDelete;
+  final VoidCallback onTapAddress;
 
-  AccountItem(
+  // ignore: use_key_in_widget_constructors
+  const AccountItem(
       {required this.address,
       required this.onTapAddress,
       required this.onTapDelete});

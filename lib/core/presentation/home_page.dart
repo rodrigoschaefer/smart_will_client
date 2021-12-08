@@ -11,7 +11,7 @@ import 'package:smart_will_client/features/will/domain/repositories/will_reposit
 
 class HomePage extends StatefulWidget {
   final WillRepository willRepository;
-  HomePage({Key? key, required this.willRepository}) : super(key: key);
+  const HomePage({Key? key, required this.willRepository}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();

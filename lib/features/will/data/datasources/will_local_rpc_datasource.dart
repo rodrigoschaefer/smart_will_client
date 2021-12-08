@@ -55,7 +55,7 @@ class WillLocalRpcDatasource implements WillDatasource {
     String? pkey = await PrivateKeyDatasource.read(ownerAddress);
     if (pkey == null) throw Exception('pKey not found');
     final credentials = EthPrivateKey.fromHex(pkey);
-    var result = await ethClient.sendTransaction(
+    await ethClient.sendTransaction(
       credentials,
       Transaction.callContract(
           from: EthereumAddress.fromHex(ownerAddress),
@@ -101,7 +101,7 @@ class WillLocalRpcDatasource implements WillDatasource {
     String? pkey = await PrivateKeyDatasource.read(ownerAddress);
     if (pkey == null) throw Exception('pKey not found');
     final credentials = EthPrivateKey.fromHex(pkey);
-    var result = await ethClient.sendTransaction(
+    await ethClient.sendTransaction(
       credentials,
       Transaction.callContract(
           from: EthereumAddress.fromHex(ownerAddress),
@@ -116,7 +116,7 @@ class WillLocalRpcDatasource implements WillDatasource {
     String? pkey = await PrivateKeyDatasource.read(recipientAddress);
     if (pkey == null) throw Exception('pKey not found');
     final credentials = EthPrivateKey.fromHex(pkey);
-    var result = await ethClient.sendTransaction(
+    await ethClient.sendTransaction(
       credentials,
       Transaction.callContract(
         from: EthereumAddress.fromHex(recipientAddress),
@@ -132,7 +132,7 @@ class WillLocalRpcDatasource implements WillDatasource {
     String? pkey = await PrivateKeyDatasource.read(ownerAddress);
     if (pkey == null) throw Exception('pKey not found');
     final credentials = EthPrivateKey.fromHex(pkey);
-    var result = await ethClient.sendTransaction(
+    await ethClient.sendTransaction(
       credentials,
       Transaction.callContract(
           from: EthereumAddress.fromHex(ownerAddress),

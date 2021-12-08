@@ -11,7 +11,7 @@ class WillRepositoryLocalImpl implements WillRepository {
   Future<String?> createWill(String ownerAddress, String recipientAddress,
       BigInt weiAmmount, DateTime redemptionDate) async {
     try {
-      var result = await _willDatasource.createWill(
+      await _willDatasource.createWill(
           ownerAddress, recipientAddress, weiAmmount, redemptionDate);
       return null;
     } catch (e) {

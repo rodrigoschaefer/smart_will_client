@@ -26,7 +26,7 @@ class WillLocalRpcDatasource implements WillDatasource {
       redeemWillContractFunction,
       refundWillContractFunction,
       registerActivityContractFunction;
-  String rpcUrl = 'http://10.0.2.2:7545';
+  String rpcUrl = Constants.rpcUrl;
 
   WillLocalRpcDatasource() {
     httpClient = Client();

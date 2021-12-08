@@ -1,5 +1,6 @@
 class Constants {
   static const accountBox = 'accountBox';
   static const smartWillContractAddress =
-      '0xE9eaA6159769515FF960542B14CFDD9b635F9D8A';
+      '0x4976BB8d0ce8b32A3E8046D77162bd0f67b971e7';
+  static const rpcUrl = 'http://10.0.2.2:7545';
 }

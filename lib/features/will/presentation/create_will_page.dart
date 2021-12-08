@@ -116,7 +116,7 @@ class _CreateWillPageState extends State<CreateWillPage> {
                     widget.ownerAddress,
                     widget._recipientController.text,
                     ammountWei,
-                    DateTime.now());
+                    DateTime.parse(_dateController.text));
                 ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(result ?? 'Will created!')));
                 Navigator.of(context).pop();
